@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#03080f"/>
+<title>King of Nifty — AI Indicator | Dr. Vikas Laddha</title>
+<meta name="description" content="King of Nifty AI Indicator by Dr. Vikas Laddha. Free Telegram channel. 28,157 members."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{
+  min-height:100%;
+  font-family:'Poppins',system-ui,sans-serif;
+  background:#03080f;
+  color:#dff0ff;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+:root{
+  --c1:#00ffe0;--c2:#0099ff;--c3:#7b2fff;
+  --gold:#f5c842;--gold2:#ffe680;
+  --dark:#03080f;--dark2:#05101e;
+  --muted:#4a85aa;--white:#dff0ff;
+  --red:#e74c3c;--green:#2ecc71;
+}
+/* BG */
+.bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 45% at 50% -5%,rgba(0,153,255,.12) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 55% at 0 55%,rgba(0,255,224,.04) 0%,transparent 55%),
+    radial-gradient(ellipse 45% 55% at 100% 60%,rgba(123,47,255,.06) 0%,transparent 55%),
+    linear-gradient(170deg,#05101e 0%,#03080f 55%,#04091a 100%);
+}
+.grain{
+  position:fixed;inset:0;z-index:1;opacity:.025;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+.grid{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,200,220,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,200,220,.025) 1px,transparent 1px);
+  background-size:50px 50px;
+}
+/* TICKER */
+.ticker{
+  position:fixed;top:0;left:0;right:0;height:28px;z-index:200;
+  background:rgba(3,8,15,.97);
+  border-bottom:1px solid rgba(0,255,224,.12);
+  display:flex;align-items:center;overflow:hidden;
+}
+.tick-lbl{
+  flex-shrink:0;padding:0 11px;height:100%;display:flex;align-items:center;
+  font-family:'Poppins',sans-serif;font-size:8px;letter-spacing:3px;
+  color:var(--c1);border-right:1px solid rgba(0,255,224,.12);
+}
+.tick-track{overflow:hidden;flex:1;height:100%;display:flex;align-items:center}
+.tick-inner{
+  display:flex;gap:24px;white-space:nowrap;
+  animation:tick 22s linear infinite;
+  font-size:9.5px;font-weight:600;will-change:transform;
+}
+.ti{display:flex;gap:4px;align-items:center}
+.tn{color:rgba(0,255,224,.4);font-size:8.5px;font-weight:700;letter-spacing:.5px}
+.tv{color:var(--muted)}
+.tu{color:var(--green);font-weight:700}
+.td{color:var(--red);font-weight:700}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* WRAP */
+.wrap{
+  position:relative;z-index:10;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:48px 20px 28px;
+  padding-bottom:max(28px,env(safe-area-inset-bottom));
+}
+
+/* AVATAR */
+.av-outer{
+  position:relative;width:110px;height:110px;
+  margin-bottom:16px;
+  animation:up .65s cubic-bezier(.22,1,.36,1) both;
+}
+.av-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,224,.18) 0%,transparent 65%);animation:halo 3s ease-in-out infinite}
+@keyframes halo{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+.av-ring2{position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(0,255,224,.15)}
+.av-ring{
+  position:absolute;inset:-5px;border-radius:50%;
+  border:2px solid rgba(0,255,224,.5);
+  box-shadow:0 0 16px rgba(0,255,224,.4),0 0 32px rgba(0,153,255,.15);
+  animation:spinRing 12s linear infinite;
+}
+.av-ring::after{
+  content:'';position:absolute;top:-3px;left:50%;transform:translateX(-50%);
+  width:6px;height:6px;border-radius:50%;
+  background:var(--c1);box-shadow:0 0 8px var(--c1),0 0 16px var(--c1);
+}
+@keyframes spinRing{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.av-crown{
+  position:absolute;top:-20px;left:50%;transform:translateX(-50%);
+  font-size:22px;line-height:1;
+  filter:drop-shadow(0 0 8px rgba(245,200,66,.8));
+  animation:bob 3s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+.av-img{
+  width:110px;height:110px;border-radius:50%;
+  object-fit:cover;object-position:center top;
+  display:block;position:relative;
+  box-shadow:0 8px 40px rgba(0,0,0,.8);
+  background:var(--dark2);
+}
+.av-badge{
+  position:absolute;bottom:2px;right:2px;
+  width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  border:2.5px solid var(--dark);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+  box-shadow:0 0 10px rgba(0,255,224,.5);
+}
+
+/* TEXT */
+.eyebrow{
+  font-size:9px;font-weight:700;letter-spacing:4px;
+  color:rgba(0,255,224,.6);text-transform:uppercase;
+  margin-bottom:6px;animation:up .55s .06s both;
+}
+.ch-name{
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(28px,8.5vw,50px);
+  line-height:1;letter-spacing:1px;text-align:center;
+  animation:up .55s .1s both;
+  margin-bottom:3px;
+}
+.t-cyan{
+  background:linear-gradient(100deg,#fff 0%,var(--c1) 40%,var(--c2) 80%,#fff 100%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:gsh 3s ease-in-out infinite;
+}
+.t-gold{
+  background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold));
+  background-size:200% 100%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:gsh 3s ease-in-out infinite;
+}
+@keyframes gsh{0%,100%{background-position:0%}50%{background-position:100%}}
+.ch-sub{
+  font-size:9px;font-weight:700;letter-spacing:5px;
+  color:rgba(0,200,220,.35);text-transform:uppercase;
+  margin-bottom:10px;animation:up .55s .12s both;
+}
+
+/* MEMBER ROW */
+.mrow{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:10px;animation:up .55s .14s both;
+}
+.mpill{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--muted)}
+.mpill strong{color:var(--white);font-weight:700}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-c{background:var(--c1);box-shadow:0 0 7px var(--c1);animation:pulse 2s ease-in-out infinite}
+.dot-g{background:var(--gold);box-shadow:0 0 7px var(--gold)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.msep{width:1px;height:13px;background:rgba(255,255,255,.07)}
+
+/* RULE */
+.rule{
+  width:min(260px,75vw);height:1px;
+  background:linear-gradient(90deg,transparent,var(--c1),var(--c2),var(--c1),transparent);
+  margin:0 auto 11px;animation:up .55s .16s both;
+}
+
+/* AI TAG */
+.ai-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 13px;border-radius:20px;
+  background:rgba(0,255,224,.05);
+  border:1px solid rgba(0,255,224,.2);
+  font-size:9px;font-weight:700;letter-spacing:3px;
+  color:var(--c1);text-transform:uppercase;
+  margin-bottom:10px;animation:up .55s .17s both;
+}
+.ai-dot{width:5px;height:5px;border-radius:50%;background:var(--c1);animation:pulse 1.6s ease-in-out infinite;box-shadow:0 0 6px var(--c1)}
+
+/* BIO */
+.bio{
+  font-size:clamp(12.5px,3.5vw,13.5px);
+  color:rgba(150,200,235,.75);
+  line-height:1.75;max-width:300px;text-align:center;
+  margin-bottom:10px;animation:up .55s .18s both;
+}
+.bio strong{color:var(--gold2);font-weight:700}
+
+/* PILLS */
+.mkts{
+  display:flex;gap:6px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:10px;animation:up .55s .2s both;
+}
+.mkt{
+  padding:5px 11px;border-radius:3px;
+  font-size:10px;font-weight:700;letter-spacing:.5px;
+  background:rgba(0,255,224,.05);
+  border:1px solid rgba(0,255,224,.18);
+  color:rgba(0,220,200,.8);text-transform:uppercase;
+}
+
+/* STATS */
+.stats{
+  display:flex;width:min(310px,88vw);
+  border:1px solid rgba(0,255,224,.12);
+  border-radius:6px;overflow:hidden;
+  margin-bottom:12px;
+  background:rgba(5,16,30,.6);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  animation:up .55s .22s both;
+}
+.stat{flex:1;padding:11px 6px;text-align:center;border-right:1px solid rgba(255,255,255,.05)}
+.stat:last-child{border-right:none}
+.sn{
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(16px,4.5vw,20px);font-weight:700;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;margin-bottom:3px;
+}
+.sl{font-size:7.5px;font-weight:700;letter-spacing:1.5px;color:rgba(0,180,210,.5);text-transform:uppercase}
+
+/* CTA */
+.cta-wrap{width:min(420px,92vw);margin-bottom:10px;animation:up .55s .26s both}
+.cta{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:17px 24px;
+  background:linear-gradient(135deg,#003d70 0%,#0068be 30%,#00b8e6 55%,#0068be 75%,#003d70 100%);
+  background-size:200% 100%;
+  border:none;border-radius:6px;
+  color:#fff;font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;
+  text-decoration:none;text-transform:uppercase;
+  white-space:nowrap;position:relative;overflow:hidden;cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 28px rgba(0,130,255,.45),0 0 0 1px rgba(0,255,224,.2);
+  animation:breathe 2.6s ease-in-out infinite,gslide 2.4s linear infinite;
+  -webkit-tap-highlight-color:transparent;
+}
+.cta::after{
+  content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(0,255,224,.2),transparent);
+  animation:shim 2.8s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%,100%{transform:scale(1);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 28px rgba(0,130,255,.45),0 0 0 1px rgba(0,255,224,.2)}
+  50%{transform:scale(1.025);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 14px 44px rgba(0,200,255,.6),0 0 0 1px rgba(0,255,224,.4)}
+}
+@keyframes gslide{0%{background-position:0%}100%{background-position:200%}}
+@keyframes shim{0%{left:-80%}100%{left:160%}}
+.tg-ico{width:22px;height:22px;fill:#fff;flex-shrink:0}
+
+/* INFO BOX */
+.ibox{
+  width:min(310px,88vw);
+  background:rgba(0,255,224,.03);
+  border:1px solid rgba(0,255,224,.1);
+  border-left:3px solid var(--c1);
+  border-radius:5px;padding:9px 12px;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:9px;
+  animation:up .55s .29s both;
+}
+.i-ico{font-size:16px;flex-shrink:0}
+.i-txt{font-size:11px;color:rgba(140,200,235,.7);line-height:1.55}
+.i-txt strong{color:var(--c1)}
+
+/* BADGES */
+.badges{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:8px;animation:up .55s .32s both;
+}
+.badge{font-size:10.5px;font-weight:600;color:rgba(0,160,190,.65);display:flex;align-items:center;gap:4px}
+.bc{color:var(--c1)}
+
+/* CREDIT */
+.credit{font-size:10px;color:rgba(0,100,140,.6);animation:up .55s .35s both}
+.credit a{color:rgba(0,200,220,.45);text-decoration:none;font-weight:600}
+
+/* KEYFRAMES */
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* RESPONSIVE */
+@media(max-height:620px){.bio{display:none}}
+@media(max-height:560px){.eyebrow,.ibox,.badges{display:none}}
+@media(max-height:490px){.mkts,.ch-sub,.ai-tag{display:none}}
+@media(min-width:480px){
+  .av-img,.av-outer{width:120px;height:120px}
+  .ch-name{font-size:clamp(34px,7vw,56px)}
+}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="grid" aria-hidden="true"></div>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="tick-lbl">LIVE</div>
+  <div class="tick-track">
+    <div class="tick-inner">
+      <span class="ti"><span class="tn">NIFTY</span><span class="tv">22,350</span><span class="tu">▲0.45%</span></span>
+      <span class="ti"><span class="tn">SENSEX</span><span class="tv">73,620</span><span class="tu">▲0.38%</span></span>
+      <span class="ti"><span class="tn">BANKNIFTY</span><span class="tv">48,240</span><span class="td">▼0.22%</span></span>
+      <span class="ti"><span class="tn">FINNIFTY</span><span class="tv">22,140</span><span class="tu">▲0.17%</span></span>
+      <span class="ti"><span class="tn">MIDCAP</span><span class="tv">44,810</span><span class="tu">▲0.91%</span></span>
+      <span class="ti"><span class="tn">RELIANCE</span><span class="tv">2,845</span><span class="tu">▲0.6%</span></span>
+      <span class="ti"><span class="tn">TCS</span><span class="tv">3,920</span><span class="td">▼0.3%</span></span>
+      <span class="ti"><span class="tn">HDFC</span><span class="tv">1,725</span><span class="tu">▲0.52%</span></span>
+      <!-- duplicate -->
+      <span class="ti"><span class="tn">NIFTY</span><span class="tv">22,350</span><span class="tu">▲0.45%</span></span>
+      <span class="ti"><span class="tn">SENSEX</span><span class="tv">73,620</span><span class="tu">▲0.38%</span></span>
+      <span class="ti"><span class="tn">BANKNIFTY</span><span class="tv">48,240</span><span class="td">▼0.22%</span></span>
+      <span class="ti"><span class="tn">FINNIFTY</span><span class="tv">22,140</span><span class="tu">▲0.17%</span></span>
+      <span class="ti"><span class="tn">MIDCAP</span><span class="tv">44,810</span><span class="tu">▲0.91%</span></span>
+      <span class="ti"><span class="tn">RELIANCE</span><span class="tv">2,845</span><span class="tu">▲0.6%</span></span>
+      <span class="ti"><span class="tn">TCS</span><span class="tv">3,920</span><span class="td">▼0.3%</span></span>
+      <span class="ti"><span class="tn">HDFC</span><span class="tv">1,725</span><span class="tu">▲0.52%</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="wrap">
+
+  <div class="av-outer">
+    <div class="av-crown">👑</div>
+    <div class="av-glow"></div>
+    <div class="av-ring2"></div>
+    <div class="av-ring"></div>
+    <a href="https://t.me/+vKOK9i8CY645ZGJl" target="_blank" rel="noopener noreferrer" aria-label="Join King of Nifty on Telegram">
+      <img
+        src="https://fantasticczone.site/wp-content/uploads/2026/06/iejjdf.jpg"
+        alt="King of Nifty — Dr. Vikas Laddha"
+        class="av-img"
+        width="110" height="110"
+        loading="eager" fetchpriority="high" decoding="async"
+      />
+    </a>
+    <div class="av-badge">🤖</div>
+  </div>
+
+  <p class="eyebrow">Official AI Trading Channel</p>
+
+  <h1 class="ch-name">
+    <span class="t-cyan">KING OF</span>&thinsp;<span class="t-gold">NIFTY</span>
+  </h1>
+  <p class="ch-sub">Dr. Vikas Laddha</p>
+
+  <div class="mrow">
+    <div class="mpill"><span class="dot dot-g"></span><strong>28,157</strong>&nbsp;subscribers</div>
+    <div class="msep"></div>
+    <div class="mpill"><span class="dot dot-c"></span><strong>AI</strong>&nbsp;Powered</div>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="ai-tag"><span class="ai-dot"></span>AI Indicator Active</div>
+
+  <p class="bio">
+    Get <strong>AI-powered signals</strong> for Nifty & Bank Nifty<br/>
+    before the market moves.<br/>
+    <strong>Precise entry, target & stop-loss</strong> — every call.
+  </p>
+
+  <div class="mkts">
+    <span class="mkt">📈 Nifty</span>
+    <span class="mkt">🏦 Bank Nifty</span>
+    <span class="mkt">🔁 F&amp;O</span>
+    <span class="mkt">⚡ Intraday</span>
+    <span class="mkt">📊 Index</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="sn">28K+</div><div class="sl">Members</div></div>
+    <div class="stat"><div class="sn">AI</div><div class="sl">Signals</div></div>
+    <div class="stat"><div class="sn">Free</div><div class="sl">To Join</div></div>
+  </div>
+
+  <div class="cta-wrap">
+    <a class="cta"
+       href="https://t.me/+vKOK9i8CY645ZGJl"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Join King of Nifty on Telegram">
+      <svg class="tg-ico" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+      </svg>
+      Join Channel — It's Free
+    </a>
+  </div>
+
+  <div class="ibox">
+    <div class="i-ico">🤖</div>
+    <div class="i-txt"><strong>AI Indicator:</strong> Machine learning model trained on live Nifty data — signals fire before the move happens.</div>
+  </div>
+
+  <div class="badges">
+    <span class="badge"><span class="bc">✓</span> Nifty Calls</span>
+    <span class="badge"><span class="bc">✓</span> Bank Nifty</span>
+    <span class="badge"><span class="bc">✓</span> F&amp;O Signals</span>
+    <span class="badge"><span class="bc">✓</span> AI Powered</span>
+  </div>
+
+  <p class="credit">Ads by <a href="https://t.me/+TRlJl628l-FkMWE9" target="_blank" rel="noopener">@Nexgroww_agency</a></p>
+
+</main>
+</body>
+</html>
